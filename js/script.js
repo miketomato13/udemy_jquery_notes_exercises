@@ -1,5 +1,151 @@
 $(function () {
-  
+  /* key up and key down events */
+  var ARROW_RIGHT = 39
+  var ARROW_LEFT  = 37
+  var ARROW_UP    = 86
+  var ARROW_DOWN  = 66
+
+    $("html").keydown(function(event) {
+      if (event.which == ARROW_RIGHT) {
+        $(".blue-box, .green-box, .red-box").stop().animate({
+        marginLeft: "+=10px"
+      }, 50)
+    }
+      if (event.which == ARROW_LEFT) {
+        $(".blue-box, .green-box, .red-box").stop().animate({
+          marginLeft: "-=10px"
+        }, 50)
+      }
+      if (event.which == ARROW_UP) {
+        $(".blue-box, .green-box, .red-box").stop().animate({
+          marginTop: "+=10px"
+        }, 50)
+      }
+      if (event.which == ARROW_DOWN) {
+        $(".blue-box, .green-box, .red-box").stop().animate({
+          marginTop: "-=10px"
+        }, 50)
+      }
+    console.log(event.which)
+    })
+  /* image gallery w lightbox preview */
+    var galleryItems = $(".gallery").find("img")
+    galleryItems.css("width", "33%").css("opacity", "0.7")
+
+    galleryItems.mouseenter(function(){
+      $(this).stop().fadeTo(500, 1)
+    })
+
+    galleryItems.mouseleave(function(){
+      $(this).stop().fadeTo(500, .7)
+    })
+
+    galleryItems.click(function(){
+      var source = $(this).attr("src")
+      var image  = $("<img>").attr("src", source).css("width", "100%")
+      $(".lightbox").empty().append(image).fadeIn(2000)
+      $(".lightbox").click(function(){
+        $(this).stop().fadeOut()
+      })
+    })
+
+  /* addtional data to events */
+//   $("#btn-click").click({
+//     user: "Peter"
+//     //additionaldata: "blahblah"
+//   }, function(event){
+//     greetUser(event.data);
+//   })
+//
+// function greetUser(userdata){
+//   username = userdata.user || "anon"
+//   //moredata = userdata.additionaldata || "more data"
+//   alert("Welcome back " + username + "!")
+// }
+  /* non delegated event */
+  // $("p").click(function(){
+  //   $(this).slideUp()
+  // })
+  // $("#content").append("<p>this is a dynamically added paragraph.</p>")
+
+  /* delegated event */
+  // $("#content").on("click", "p", function (){
+  //   $(this).slideUp()
+  // })
+  // $("#content").append("<p>this is a dynamically added paragraph.</p>")
+
+// $("body").on("mouseenter","li", function(){
+//   $(this).css("color", "#666")
+// })
+
+
+
+/* modularize function */
+//   function logEvent(){
+//     console.log("Mouse was clicked or key was pressed")
+//   }
+//
+// /** same handler for multiple events **/
+// // .on("click", function(){...})
+// $("html").on("click keydown", logEvent)
+//
+// var galleryImage = $(".gallery").find("img").first();
+// var images = [
+//   "images/laptop-mobile_small.jpg",
+//   "images/laptop-on-table_small.jpg",
+//   "images/people-office-group-team_small.jpg",
+// ];
+//
+// var i = 0
+// $(".gallery").on("click", fadeImageToNext)
+//
+// function fadeImageToNext(){
+//   i = (i+1) % images.length; // 0,1,2,0,1,2,0,1...
+//     galleryImage.fadeOut(function(){
+//       $(this).attr("src", images[i]);
+//       $(this).fadeIn()
+//     })
+// }
+
+
+/** hover event :hover - 2 events fire, one when mouseEnters and mouseLeaves **/
+// $("#btn-hover").hover(function(){
+//   alert("nerdy nerds")
+// })
+
+// $(".green-box").hover(function(){
+//   var gbHover = $(this)
+//   gbHover.text("I was hovered")
+// })
+//
+// var blueBox = $(".blue-box")
+// blueBox.mouseenter(function(){
+//   $(this).stop().fadeTo(500, 0.7)
+// })
+//
+// blueBox.mouseleave(function(){
+//   blueBox.stop().fadeTo(500,1)
+// })
+
+// hover(handlerIn, handlerOut)
+
+// blueBox.hover(function(){
+//   $(this).stop().fadeTo(500, 0.7)
+// }, function(){
+//   $(this).stop().fadeTo(500, 1)
+// })
+
+  /*** event handlers ***/
+    // $("#btn-click").click(function(){
+    //   alert("button was clicked.")
+    // })
+    //
+    // $(".red-box").click(function(){
+    //   $(this).fadeTo(1000, .5)
+    // })
+
+
+
   /*** change content in html tags ***/
 
   // var pFirst = $("p:first")
