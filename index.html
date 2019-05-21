@@ -11,6 +11,8 @@
   <div id="content">
     <h1>The Complete jQuery Course - Project Structure</h1>
 
+      <pre><code id="code"></code></pre>
+
     <div class="red-box">Red</div>
     <div class="green-box">Green</div>
     <div class="blue-box">Blue</div>
@@ -20,7 +22,9 @@
     <p data-mydata="some data">We <em>love</em> boxes</p>
     <p><a href="/url" id="anchor" target="_blank">I am the box master! </a> You can't come at me with boxes dog!</p>
 
-    <div class="gallery">
+    <div id="pokemon-details"></div>
+    <div id="pokemon"></div>
+    <!-- <div class="gallery">
       <img src="images/laptop-mobile_small.jpg" alt="">
       <img src="images/laptop-on-table_small.jpg" alt="">
       <img src="images/people-office-group-team_small.jpg" alt="">
@@ -46,14 +50,29 @@
           <li>Sub item E</li>
           <li>Sub item F</li>
         </ul></li>
-    </ul>
-    <form class="" action="index.html" method="post">
-      <input id="name" type="text" name="" value="Peter"><br/>
-      <input type="password" name="" value=""><br/>
-      <input type="range" min="1" max="10" value="7"> <br/>
-      <input type="checkbox" checked><label for="cb">Check me</label><br/>
-      <textarea name="" rows="10" cols="30"></textarea> <br/>
-      <input type="submit" name="" value="Submit">
+    </ul> -->
+    <form id="form" action="index.html" method="post">
+      <input id="name" type="text" placeholder="enter your name">
+      <span id="name-feedback"></span><br/>
+
+      <input id="password" type="password" placeholder="enter your password">
+      <span id="password-feedback"></span><br/>
+
+      <input id="amount" type="range" min="1" max="9" value="5"> <br/>
+
+      <textarea id="message" name="" rows="10" cols="30"></textarea>
+      <span id="message-feedback"></span></br>
+
+      <input id ="checkbox" type="checkbox" name="cb"><label for="cb">Check me</label>
+      <span id="checkbox-feedback"></span><br/>
+
+      <select name="" id="selection">
+        <option value="">Option 1</option>
+        <option value="">Option 2</option>
+        <option value="">Option 3</option>
+      </select>
+
+    <input type="submit" name="" value="Submit">
     </form>
     <div class="lightbox">
       <h2>Lightbox</h2>

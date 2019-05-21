@@ -1,76 +1,294 @@
 $(function () {
-  /* focus and blur events */
-  var inputFields = $("input:text, input:password, textarea")
+  /*** poke api calls ***/
+  var pokeApiUrl = "https://pokeapi.co/api/v2/generation/1"
+  var pokeByName = "https://pokeapi.co/api/v2/pokemon/"
 
-  inputFields.focus(function(){
-    $(this).css("box-shadow", "0 0 4px #666")
-  })
+  $.getJSON(pokeApiUrl).done(function(data){
+    console.log(data)
+    $.each(data.pokemon_species, function(index, pokemon){
+      var name = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)
+      var link = $("<a>").attr("id", pokemon.name).attr("href", "#").append($("<strong>").text(name))
+      var par  = $("<p>").html("Pokemon Species #" + (index+1) + " is ").append(link)
 
-  inputFields.blur(function(){
-    $(this).css("box-shadow", "none")
-  })
-
-  $("#name").blur(function(){
-    var text = $(this).val()
-    if (text.length < 3){
-      $(this).css("box-shadow", "0 0 4px #811")
-    } else {
-      $(this).css("box-shadow", "0 0 4px #181")
-    }
-    }
-  )
-
-
-
-  /* key up and key down events */
-  var ARROW_RIGHT = 39
-  var ARROW_LEFT  = 37
-  var ARROW_UP    = 86
-  var ARROW_DOWN  = 66
-
-    $("html").keydown(function(event) {
-      if (event.which == ARROW_RIGHT) {
-        $(".blue-box, .green-box, .red-box").stop().animate({
-        marginLeft: "+=10px"
-      }, 50)
-    }
-      if (event.which == ARROW_LEFT) {
-        $(".blue-box, .green-box, .red-box").stop().animate({
-          marginLeft: "-=10px"
-        }, 50)
-      }
-      if (event.which == ARROW_UP) {
-        $(".blue-box, .green-box, .red-box").stop().animate({
-          marginTop: "+=10px"
-        }, 50)
-      }
-      if (event.which == ARROW_DOWN) {
-        $(".blue-box, .green-box, .red-box").stop().animate({
-          marginTop: "-=10px"
-        }, 50)
-      }
-    console.log(event.which)
-    })
-  /* image gallery w lightbox preview */
-    var galleryItems = $(".gallery").find("img")
-    galleryItems.css("width", "33%").css("opacity", "0.7")
-
-    galleryItems.mouseenter(function(){
-      $(this).stop().fadeTo(500, 1)
-    })
-
-    galleryItems.mouseleave(function(){
-      $(this).stop().fadeTo(500, .7)
-    })
-
-    galleryItems.click(function(){
-      var source = $(this).attr("src")
-      var image  = $("<img>").attr("src", source).css("width", "100%")
-      $(".lightbox").empty().append(image).fadeIn(2000)
-      $(".lightbox").click(function(){
-        $(this).stop().fadeOut()
+      link.click(function(event){
+        $.getJSON(pokeByName + pokemon.name).done(function(details){
+            console.log(details)
+            var pokeDiv = $("#pokemon-details")
+            pokeDiv.empty()
+            pokeDiv.append("<h2>" + name + "</h2>")
+            pokeDiv.append("<img src='" + details.sprites.front_default + "'>")
+            pokeDiv.append("<img src='" + details.sprites.back_default + "'>")
+            pokeDiv.append("<img src='" + details.sprites.back_shiny + "'>")
+            pokeDiv.append("<img src='" + details.sprites.front_shiny + "'>")
+        })
+        event.preventDefault()
       })
+
+      par.appendTo("#pokemon")
     })
+  }).fail(function(){
+    console.log("request to pokeApi failed")
+  }).always(function(){
+    console.log("Pokemon is awesome.")
+  })
+
+
+  /***** flickr api calls *****/
+  // JSON
+  // {key: value, key2: value}
+  //$.getJSON()
+
+  // var flickerApi = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?"
+  //
+  // $.getJSON(flickerApi, {
+  //   //options aka keys
+  //   tags: "sun, beach",
+  //   tagmode: "any",
+  //   format: "json"
+  // }).done(function(data){
+  //   //sucess
+  //   console.log(data)
+  //   $.each(data.items, function(index, item){ // obj would be key, value. this is array, so it is index
+  //     console.log(item)
+  //     $("<img>").attr("src", item.media.m).appendTo("#flickr")
+  //
+  //     if (index == 2) {
+  //       return false
+  //     }
+  //
+  //   })
+  // }).fail(function(){
+  //   //failure
+  //   alert("ajax call failed")
+  // })
+
+
+
+  // $.load()
+  // $("#code").load("jQueryClass/js/script.js");
+  //
+  // $("#code").load("idontexist.php", function(response, status){
+  //   if (status == "error"){
+  //     alert("could not find")
+  //   }
+  //   console.log(response)
+  // })
+
+  // $.get(), $.post(), $.ajax(), $.getJSON() API REQUESTS W JQUERY
+
+
+  /*FORM VALIDATION */
+
+  // var form = $("#form")
+  // enableFastFeedback(form)
+  //
+  // /* complete form validation on submit */
+  // $("#form").submit(function(event){
+  //   var name = $("#name").val()
+  //   var password = $("#password").val()
+  //   var message = $("#message").val()
+  //   var isChecked = $("#checkbox").is(":checked")
+  //
+  //   validateNameField(name, event)
+  //   validatePasswordField(password, event)
+  //   validateMessageField(message, event)
+  //   validateCheckBox(checked, event)
+  // })
+  //
+  // function enableFastFeedback(formElement) {
+  //   var nameInput = formElement.find("#name")
+  //   var passwordInput = formElement.find("#password")
+  //   var messageInput = formElement.find("#message")
+  //   var checkboxInput = formElement.find("#checkbox")
+  //
+  //   nameInput.blur(function(event){
+  //     var name = $(this).val()
+  //     validateNameField (name, event)
+  //
+  //     if (!isValidName(name)) {
+  //       $(this).css({"box-shadow": "0 0 4px #811", "border": "1px solid #600"})
+  //     } else {
+  //       $(this).css({"box-shadow": "0 0 4px #181", "border": "1px solid #060"})
+  //     }
+  //     })
+  //
+  //     passwordInput.blur(function(event){
+  //       var password = $(this).val()
+  //       validatePasswordField (password, event)
+  //
+  //       if (!isValidName(password)) {
+  //         $(this).css({"box-shadow": "0 0 4px #811", "border": "1px solid #600"})
+  //       } else {
+  //         $(this).css({"box-shadow": "0 0 4px #181", "border": "1px solid #060"})
+  //       }
+  //     })
+  //
+  //     messageInput.blur(function(event){
+  //       var message = $(this).val()
+  //       validateMessageField (message, event)
+  //
+  //       if (!isValidName(message)) {
+  //         $(this).css({"box-shadow": "0 0 4px #811", "border": "1px solid #600"})
+  //       } else {
+  //         $(this).css({"box-shadow": "0 0 4px #181", "border": "1px solid #060"})
+  //       }
+  //     })
+  //
+  //     checkboxInput.change(function(event){
+  //       var isChecked = $(this).is(":checked")
+  //       validateCheckBoxField(checkbox, event)
+  //
+  //       if (!isChecked) {
+  //         $(this).add("label[for='cb']").css({"box-shadow": "0 0 4px #811", "border": "1px solid #600"})
+  //       } else {
+  //         $(this).add("label[for='cb']").css({"box-shadow": "0 0 4px #181", "border": "1px solid #060"})
+  //       }
+  //     })
+  //
+  //   }
+  //
+  //
+  //
+  // function validateNameField(name, event) {
+  //   if (!isValidName(name)) {
+  //     $("#name-feedback").text("please enter at least three characters")
+  //     event.preventDefault()
+  //   } else {
+  //     $("#name-feedback").text("")
+  //   }
+  // }
+  //
+  // function validatePasswordField(password, event){
+  //   if (!isValidName(password)) {
+  //     $("#password-feedback").text("please enter at least three characters")
+  //     event.preventDefault()
+  //   } else {
+  //     $("password-feedback").text("")
+  //   }
+  // }
+  //
+  // function validateMessageField(message, event){
+  //   if (!isValidName(message)) {
+  //     $("message-feedback").text("please enter at least three characters") // #43 on udemy
+  //     event.preventDefault()
+  //   } else {
+  //     $("message-feedback").text("")
+  //   }
+  // }
+  //
+  // function validateCheckBox (isChecked, event) {
+  //   if (!isChecked) {
+  //     $("checkbox-feedback").text("please check this box")
+  //     event.preventDefault()
+  //   } else {
+  //     $("checkbox-feedback").text("")
+  //   }
+  // }
+  //
+  // function isValidName(name){
+  //   return name.length >= 3 // can also make this so it's only characters, no numbers allowed in this func
+  // }
+
+
+
+  /* submit event basic validation */
+  // $("#form").submit(function(event) {
+  //   var textArea = $("#message")
+  //   if (textArea.val().trim() == "") {
+  //     textArea.css("box-shadow", "0 0 4px #811")
+  //     event.preventDefault()
+  //   } else {
+  //     // form will be submitted
+  //   }
+  // })
+
+  /* change event */
+  // $("#checkbox").change(function(){
+  //   var isChecked = $(this).is(":checked") // prop("checked")
+  //   if (isChecked) {
+  //     $(this).add("label[for='cb']").css("box-shadow", "0 0 4px #181")
+  //   } else {
+  //     $(this).add("label[for='cb']").css("box-shadow", "0 0 4px #811")
+  //   }
+  // })
+  //
+  // $("#selection").change(function(){
+  //   var selectedOption = $(this).find(":selected").text()
+  //   alert(selectedOption)
+  //   })
+  //
+  // /* focus and blur events */
+  // var inputFields = $("input:text, input:password, textarea")
+  //
+  // inputFields.focus(function(){
+  //   $(this).css("box-shadow", "0 0 4px #666")
+  // })
+  //
+  // inputFields.blur(function(){
+  //   $(this).css("box-shadow", "none")
+  // })
+  //
+  // $("#name").blur(function(){
+  //   var text = $(this).val()
+  //   if (text.length < 3){
+  //     $(this).css("box-shadow", "0 0 4px #811")
+  //   } else {
+  //     $(this).css("box-shadow", "0 0 4px #181")
+  //   }
+  //   }
+  // )
+  //
+  //
+  //
+  // /* key up and key down events */
+  // var ARROW_RIGHT = 39
+  // var ARROW_LEFT  = 37
+  // var ARROW_UP    = 86
+  // var ARROW_DOWN  = 66
+  //
+  //   $("html").keydown(function(event) {
+  //     if (event.which == ARROW_RIGHT) {
+  //       $(".blue-box, .green-box, .red-box").stop().animate({
+  //       marginLeft: "+=10px"
+  //     }, 50)
+  //   }
+  //     if (event.which == ARROW_LEFT) {
+  //       $(".blue-box, .green-box, .red-box").stop().animate({
+  //         marginLeft: "-=10px"
+  //       }, 50)
+  //     }
+  //     if (event.which == ARROW_UP) {
+  //       $(".blue-box, .green-box, .red-box").stop().animate({
+  //         marginTop: "+=10px"
+  //       }, 50)
+  //     }
+  //     if (event.which == ARROW_DOWN) {
+  //       $(".blue-box, .green-box, .red-box").stop().animate({
+  //         marginTop: "-=10px"
+  //       }, 50)
+  //     }
+  //   // console.log(event.which)
+  //   })
+  // /* image gallery w lightbox preview */
+  //   var galleryItems = $(".gallery").find("img")
+  //   galleryItems.css("width", "33%").css("opacity", "0.7")
+  //
+  //   galleryItems.mouseenter(function(){
+  //     $(this).stop().fadeTo(500, 1)
+  //   })
+  //
+  //   galleryItems.mouseleave(function(){
+  //     $(this).stop().fadeTo(500, .7)
+  //   })
+  //
+  //   galleryItems.click(function(){
+  //     var source = $(this).attr("src")
+  //     var image  = $("<img>").attr("src", source).css("width", "100%")
+  //     $(".lightbox").empty().append(image).fadeIn(2000)
+  //     $(".lightbox").click(function(){
+  //       $(this).stop().fadeOut()
+  //     })
+  //   })
 
   /* addtional data to events */
 //   $("#btn-click").click({
